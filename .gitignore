@@ -9,3 +9,6 @@ coverage
 src/types/auto-imports.d.ts
 src/types/components.d.ts
 src/types/typed-router.d.ts
+.devserver*.log
+homepage*.png
+homepage*.har
