@@ -1,17 +1,11 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { useAuth } from '~/composables/useAuth'
 import { useTheme } from '~/composables/useTheme'
 
-const route = useRoute()
 const router = useRouter()
 const { isAuthenticated, logout } = useAuth()
 const { themeLabel, toggleTheme } = useTheme()
-const navItems = computed(() => [
-  { label: 'Overview', to: '/' },
-  { label: 'API Demo', to: '/demo-api' },
-])
 
 async function handleLogout() {
   await logout()
@@ -37,18 +31,6 @@ async function handleLogout() {
           </div>
         </div>
 
-        <nav class="hidden items-center gap-2 md:flex">
-          <RouterLink
-            v-for="item in navItems"
-            :key="item.to"
-            :to="item.to"
-            class="rounded-full px-4 py-2 text-sm text-[var(--color-text-soft)] transition hover:bg-[var(--color-surface-raised)] hover:text-[var(--color-text)]"
-            :class="route.path === item.to ? 'bg-[var(--color-surface-raised)] text-[var(--color-text)]' : ''"
-          >
-            {{ item.label }}
-          </RouterLink>
-        </nav>
-
         <div class="flex items-center gap-2">
           <button class="border border-[var(--color-border)] rounded-full px-4 py-2 text-sm hover:bg-[var(--color-surface-raised)]" type="button" @click="toggleTheme">
             {{ themeLabel }}
@@ -59,12 +41,12 @@ async function handleLogout() {
             type="button"
             @click="handleLogout"
           >
-            Logout
+            退出登录
           </button>
         </div>
       </div>
     </header>
 
-    <slot />
+    <RouterView />
   </div>
 </template>

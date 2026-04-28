@@ -12,7 +12,7 @@ function applyThemeDom(theme: ThemeMode) {
 
 export const useAppStore = defineStore('app', () => {
   const theme = ref<ThemeMode>(defaultTheme)
-  const themeLabel = computed(() => theme.value === 'dark' ? 'Light mode' : 'Dark mode')
+  const themeLabel = computed(() => theme.value === 'dark' ? '切换浅色' : '切换深色')
 
   function setTheme(value: ThemeMode) {
     theme.value = value
