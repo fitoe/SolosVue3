@@ -1,12 +1,12 @@
 # SolosVue3
 
-像 `Vitesse` 一样追求快、轻、顺手，但更偏向 2026 年常见业务型 SPA 的 Vue 3 脚手架。
+面向 2026 年常见业务型 SPA 场景的 Vue 3 脚手架，强调快、轻、顺手、可删改。
 
 > English summary: `SolosVue3` is an open Vue 3 + Vite 8 SPA starter focused on typed file-based routing, layouts, Pinia, UnoCSS tokens, alova request layer, auth skeleton, and removable demos. Chinese docs first, English kept as a supplement.
 
 <br>
 
-> 这个模板参考了 [Vitesse](https://github.com/antfu-collective/vitesse) 的结构思路，但不直接复制它的 SSG / Markdown / PWA 默认路线，而是收敛成更适合业务项目起步的 `base + presets` 方案。
+> 这个模板采用 `base + presets` 的思路：base 只保留最常用、最稳定的能力，额外能力后续按需增强，而不是一开始就把所有生态件塞进来。
 
 <br>
 
@@ -167,18 +167,18 @@ test/           基础测试
 
 ## 设计取向
 
-### 1. 参考 `Vitesse`，但不照搬
+### 1. 只保留高价值默认项
 
-继承这些思路：
+默认保留这些能力：
 
 - 文件路由
 - layouts
 - modules 启动装配
 - 自动导入
 - UnoCSS
-- antfu 风格工程配置
+- 工程质量门
 
-主动去掉这些默认项：
+主动不放进 base 的能力：
 
 - `vite-ssg`
 - Markdown pages
