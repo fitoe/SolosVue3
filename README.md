@@ -1,53 +1,65 @@
 # SolosVue3
 
-Open Vue 3 scaffold for modern SPA work. Uses Vite 8, typed file routes, layouts, Pinia, UnoCSS tokens, alova request client, auth skeleton, and removable demos.
+像 `Vitesse` 一样追求快、轻、顺手，但更偏向 2026 年常见业务型 SPA 的 Vue 3 脚手架。
 
-## Why this exists
+> English summary: `SolosVue3` is an open Vue 3 + Vite 8 SPA starter focused on typed file-based routing, layouts, Pinia, UnoCSS tokens, alova request layer, auth skeleton, and removable demos. Chinese docs first, English kept as a supplement.
 
-- Inspired by [Vitesse](https://github.com/antfu-collective/vitesse) structure.
-- Trimmed for SPA-first teams in 2026.
-- Keeps base small. Keeps optional capabilities in presets.
+<br>
 
-## Requirements
+> 这个模板参考了 [Vitesse](https://github.com/antfu-collective/vitesse) 的结构思路，但不直接复制它的 SSG / Markdown / PWA 默认路线，而是收敛成更适合业务项目起步的 `base + presets` 方案。
 
-- Node `20.19+` or `22.12+`
-- pnpm `10+`
+<br>
 
-## Included
+**English**: supplementary only. For full Chinese guide, keep reading below. If needed, you can also check [README.zh-CN.md](./README.zh-CN.md).
 
-- Vue 3.5
-- Vite 8
-- Vue Router 4 with file-based typed routes
-- Layouts
-- Pinia
-- UnoCSS + CSS variable tokens
-- alova request client
-- Auth skeleton
-- Vitest + vue-tsc + ESLint flat config
+## 特性
 
-## Not included in base
+- `Vue 3` + `Vite 8` + `pnpm`
+- 基于文件的路由
+- 类型化路由生成
+- `layouts` 页面布局系统
+- `Pinia` 状态管理
+- `UnoCSS` + `CSS Variables` design tokens
+- `alova` 请求层基座
+- 最小鉴权骨架
+- `Vitest` + `vue-tsc` + `ESLint flat config`
+- 可删除 demo
+- 同仓 `presets` 扩展位
+
+## 适合什么项目
+
+- 中小型到中大型业务 SPA
+- 后台系统、工具平台、业务中台
+- 想保留 Vue 生态开发体验，但不想一上来就用完整 SSR/全栈框架的项目
+
+## 不默认做什么
+
+这个模板刻意**不**在 base 里直接塞这些能力：
 
 - SSG
 - PWA
 - i18n
-- Markdown pages
-- Heavy UI libraries
-- E2E runner
+- Markdown 页面系统
+- 重 UI 组件库
+- E2E 测试器
+- 特定部署平台绑定
 
-## Commands
+原因很简单：这些能力都常见，但不该成为所有项目的默认负担。base 保持轻，增强能力走 `presets`。
 
-```bash
-pnpm install
-pnpm dev
-pnpm lint
-pnpm typecheck
-pnpm test
-pnpm build
-```
+## 环境要求
 
-## Use as a template
+- Node `20.19+` 或 `22.12+`
+- pnpm `10+`
 
-Use GitHub template button, or clone a clean copy with `degit`:
+## 现在可以试试
+
+### 使用 GitHub Template
+
+直接点击 GitHub 的 `Use this template`。
+
+### 使用 `degit`
+
+如果你更喜欢一份干净的历史：
 
 ```bash
 npx degit fitoe/SolosVue3 my-app
@@ -56,46 +68,155 @@ pnpm install
 pnpm dev
 ```
 
-## Structure
+## 开发
 
-- `src/pages`: route files
-- `src/layouts`: page shells
-- `src/modules`: startup installers
-- `src/api`: alova client and method modules
-- `src/stores`: global state only
-- `src/styles`: tokens, themes, global styles
-- `presets`: optional enhancements
+```bash
+pnpm dev
+```
 
-## Add a page
+默认启动 Vite 开发服务器。
 
-Create `src/pages/my-page.vue`. Use a `<route>` block when you need meta.
+## 构建
 
-## Add a layout
+```bash
+pnpm build
+```
 
-Create `src/layouts/<name>.vue`, then set `meta.layout` in the page route block.
+构建前会先跑 `vue-tsc --noEmit`。
 
-## Add an API method
+## 常用命令
 
-Create a file in `src/api/modules`, import `alovaClient`, return `Get/Post/...` methods.
+```bash
+pnpm dev
+pnpm lint
+pnpm typecheck
+pnpm test
+pnpm build
+pnpm demo:remove
+pnpm preset:apply <preset-name>
+```
 
-## Auth skeleton
+## 目录结构
 
-- Token persisted in local storage
-- `requiresAuth` route redirect
-- `guestOnly` route redirect
-- Demo login/logout only
+```txt
+src/
+  pages/        页面路由文件
+  layouts/      页面壳层
+  modules/      启动安装模块
+  api/          alova client 和接口 method
+  stores/       全局状态
+  composables/  组合式逻辑
+  styles/       tokens、主题、全局样式
+  components/   基础 app 组件
+presets/        可选增强能力
+scripts/        preset / demo 处理脚本
+test/           基础测试
+```
 
-## Remove demos
+## 预置约定
+
+### 路由
+
+- 页面放在 `src/pages`
+- 使用文件路由
+- 支持 route meta
+- 支持 layout 切换
+
+示例：
+
+```vue
+<route lang="json">
+{
+  "meta": {
+    "title": "Dashboard",
+    "layout": "default",
+    "requiresAuth": true
+  }
+}
+</route>
+```
+
+### 布局
+
+- `src/layouts/default.vue`
+- `src/layouts/blank.vue`
+
+新增布局后，在页面 route meta 里指定 `layout` 即可。
+
+### 请求层
+
+- `src/api/client.ts`：统一 `alova` client
+- `src/api/interceptors.ts`：请求头、401、错误映射
+- `src/api/modules/*`：按域拆分 method
+
+### 鉴权骨架
+
+默认只做这些：
+
+- token 持久化
+- `requiresAuth` 路由守卫
+- `guestOnly` 路由守卫
+- demo 登录/退出
+
+默认不做这些：
+
+- RBAC 菜单系统
+- 动态路由回灌
+- 多租户模型
+- 标签页缓存
+
+## 设计取向
+
+### 1. 参考 `Vitesse`，但不照搬
+
+继承这些思路：
+
+- 文件路由
+- layouts
+- modules 启动装配
+- 自动导入
+- UnoCSS
+- antfu 风格工程配置
+
+主动去掉这些默认项：
+
+- `vite-ssg`
+- Markdown pages
+- PWA
+- i18n
+- webfont 下载链
+- 旧的 E2E 默认栈
+
+### 2. Base 要轻
+
+这个仓库的目标不是“开箱即用的大而全后台模板”，而是：
+
+- 起点足够完整
+- 删除足够容易
+- 约定足够清楚
+
+### 3. Tokens 是真相源
+
+样式层的真相源在：
+
+- `src/styles/tokens.css`
+- `src/styles/themes.css`
+
+`UnoCSS` 负责消费这些 tokens，不负责定义设计系统真相。
+
+## 删除 demo
+
+如果你不想保留模板自带页面：
 
 ```bash
 pnpm demo:remove
 ```
 
-Then remove demo links or replace them with real pages before building.
+它会移除 demo 登录页、demo API 页面和对应示例 method。执行后，记得把导航里的示例链接一起替换或删掉。
 
 ## Presets
 
-Current placeholders:
+当前仓库预留了这些扩展位：
 
 - `i18n`
 - `pwa`
@@ -104,4 +225,30 @@ Current placeholders:
 - `mock`
 - `e2e-playwright`
 
-Check each preset directory for notes and dependency intent.
+现在还是占位结构，后续可以逐步做成真正可应用的 preset。
+
+## 验证
+
+模板当前已验证通过：
+
+- `pnpm lint`
+- `pnpm typecheck`
+- `pnpm test`
+- `pnpm build`
+
+并且额外验证过：
+
+- `pnpm demo:remove` 之后仍可构建
+
+## English Summary
+
+- SPA-first Vue 3 starter
+- Vite 8 baseline
+- Typed file-based routes
+- Layout system
+- Pinia
+- UnoCSS + CSS variable tokens
+- alova request layer
+- auth skeleton
+- removable demos
+- Chinese-first documentation
