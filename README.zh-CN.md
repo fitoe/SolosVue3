@@ -1,8 +1,47 @@
-# SolosVue3
+<p align="center">
+  <h1 align="center">SolosVue3</h1>
+  <p align="center">面向现代业务型 SPA 的 Vue 3 脚手架，强调快、轻、顺手、可删改。</p>
+</p>
 
-面向 2026 年常见业务型 SPA 场景的 Vue 3 脚手架，强调快、轻、顺手、可删改。
+<p align="center">
+  <a href="https://github.com/fitoe/SolosVue3"><img alt="GitHub Repo" src="https://img.shields.io/badge/GitHub-SolosVue3-111827?logo=github"></a>
+  <a href="https://github.com/fitoe/SolosVue3/generate"><img alt="Template" src="https://img.shields.io/badge/template-ready-2563eb"></a>
+  <img alt="Vue 3" src="https://img.shields.io/badge/Vue-3.5-42b883?logo=vue.js">
+  <img alt="Vite 8" src="https://img.shields.io/badge/Vite-8-646cff?logo=vite">
+  <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-5.9-3178c6?logo=typescript">
+  <img alt="License" src="https://img.shields.io/badge/license-unset-lightgrey">
+</p>
+
+<p align="center">
+  <a href="https://github.com/fitoe/SolosVue3/generate">Use this template</a> ·
+  <a href="./README.md">English Summary</a>
+</p>
 
 > 这个模板采用 `base + presets` 的思路：base 只保留最常用、最稳定的能力，额外能力后续按需增强，而不是一开始就把所有生态件塞进来。
+
+## 快速预览
+
+- `Vue 3` + `Vite 8` + `TypeScript`
+- 文件路由 + typed routes + layouts
+- `Pinia` + `alova` + auth skeleton
+- `UnoCSS` + `CSS Variables` tokens
+- `Vitest` + `vue-tsc` + `ESLint`
+- demo 可删，presets 可扩
+
+## 一分钟开始
+
+### GitHub Template
+
+点击仓库顶部 `Use this template`。
+
+### degit
+
+```bash
+npx degit fitoe/SolosVue3 my-app
+cd my-app
+pnpm install
+pnpm dev
+```
 
 ## 特性
 
@@ -42,23 +81,6 @@
 
 - Node `20.19+` 或 `22.12+`
 - pnpm `10+`
-
-## 现在可以试试
-
-### 使用 GitHub Template
-
-直接点击 GitHub 的 `Use this template`。
-
-### 使用 `degit`
-
-如果你更喜欢一份干净的历史：
-
-```bash
-npx degit fitoe/SolosVue3 my-app
-cd my-app
-pnpm install
-pnpm dev
-```
 
 ## 开发
 
