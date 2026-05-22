@@ -161,17 +161,26 @@ test/           基础测试
 
 ### 请求层
 
-- `src/api/client.ts`：统一 `alova` client
+- `src/api/client.ts`：统一 `alova` client，集中解析 JSON、204 和 HTTP 错误
 - `src/api/interceptors.ts`：请求头、401、错误映射
 - `src/api/modules/*`：按域拆分 method
+- `VITE_API_BASE_URL`：配置 API baseURL，默认 `/api`
+- `VITE_PROXY_TARGET`：本地开发时可选代理目标，例如 `http://localhost:3000`
+
+复制 `.env.example` 到 `.env.local` 后按项目改值：
+
+```bash
+cp .env.example .env.local
+```
 
 ### 鉴权骨架
 
 默认只做这些：
 
-- token 持久化
+- token 和最小用户信息持久化
 - `requiresAuth` 路由守卫
 - `guestOnly` 路由守卫
+- 401 清理会话并跳转登录
 - demo 登录/退出
 
 默认不做这些：
@@ -228,7 +237,13 @@ test/           基础测试
 pnpm demo:remove
 ```
 
-它会移除 demo 登录页、demo API 页面和对应示例 method。执行后，记得把导航里的示例链接一起替换或删掉。
+它会移除 demo 登录页、demo API 页面、对应示例 method，并清理常见生成类型文件。执行后，运行 `pnpm typecheck` 重新生成 typed route/component 声明，再把导航里的示例链接替换为你的业务入口。
+
+可先预览将删除的文件：
+
+```bash
+node scripts/remove-demo.mjs --dry-run
+```
 
 ## Presets
 

@@ -13,29 +13,29 @@ import type { DemoStatusResponse } from '~/types/api'
 import { computed, onMounted, ref } from 'vue'
 import { createApiError } from '~/api/interceptors'
 import { getDemoStatus } from '~/api/modules/demo'
+import { createAppConfig } from '~/app/config'
 import AppCard from '~/components/app/AppCard.vue'
 import AppContainer from '~/components/app/AppContainer.vue'
 import AppLoading from '~/components/app/AppLoading.vue'
 
-const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || '/api'
+const { apiBaseUrl } = createAppConfig()
 const data = ref<DemoStatusResponse>({
   generatedAt: '',
   message: '',
   stack: [],
 })
-const error = ref<Error | null>(null)
+const error = ref<string>('')
 const loading = ref(false)
 const statusItems = computed(() => data.value.stack)
 
 async function send() {
   loading.value = true
-  error.value = null
+  error.value = ''
 
   try {
     data.value = await getDemoStatus().send()
   } catch (caught) {
-    const apiError = createApiError(caught)
-    error.value = new Error(apiError.message)
+    error.value = createApiError(caught).message
   } finally {
     loading.value = false
   }
@@ -51,10 +51,10 @@ onMounted(send)
         Request layer
       </p>
       <h1 class="text-3xl font-semibold">
-        alova demo page
+        API module example
       </h1>
       <p class="text-sm text-[var(--color-text-soft)] leading-6">
-        Shows request state, typed payload, retry trigger, and auth-protected route.
+        Shows request state, typed payload, retry trigger, and auth-protected route without requiring a backend service.
       </p>
     </header>
 
@@ -62,15 +62,15 @@ onMounted(send)
       <div class="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h2 class="text-lg font-semibold">
-            Demo status
+            Local status payload
           </h2>
-          <p class="text-sm text-[var(--color-text-soft)]">
-            Request path resolves against <code>{{ apiBaseUrl }}</code>.
+          <p class="text-sm text-[var(--color-text-soft)] leading-6">
+            Real endpoints resolve against <code>{{ apiBaseUrl || '/' }}</code>; this page keeps the starter runnable by using a local method adapter.
           </p>
         </div>
 
         <button
-          class="border border-[var(--color-border)] rounded-full px-4 py-2 text-sm font-medium hover:bg-[var(--color-surface-raised)]"
+          class="app-button-secondary"
           type="button"
           @click="send()"
         >
@@ -85,7 +85,7 @@ onMounted(send)
           Request failed
         </p>
         <p class="mt-2">
-          {{ error.message }}
+          {{ error }}
         </p>
       </div>
 
@@ -108,7 +108,7 @@ onMounted(send)
             <p class="text-sm font-medium">
               {{ item.title }}
             </p>
-            <p class="mt-2 text-sm text-[var(--color-text-soft)]">
+            <p class="mt-2 text-sm text-[var(--color-text-soft)] leading-6">
               {{ item.detail }}
             </p>
           </li>

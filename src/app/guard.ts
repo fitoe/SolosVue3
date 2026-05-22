@@ -1,4 +1,5 @@
 import type { Router } from 'vue-router'
+import { APP_NAME } from '~/constants/app'
 import { useAuthStore } from '~/stores/auth'
 
 export function applyRouterGuards(router: Router) {
@@ -17,8 +18,10 @@ export function applyRouterGuards(router: Router) {
   })
 
   router.afterEach((to) => {
-    const auth = useAuthStore()
-    const title = typeof to.meta.title === 'string' ? to.meta.title : 'SolosVue3'
-    document.title = auth.isAuthenticated ? `${title} · SolosVue3` : title
+    if (typeof document === 'undefined')
+      return
+
+    const title = typeof to.meta.title === 'string' ? to.meta.title : APP_NAME
+    document.title = title === APP_NAME ? APP_NAME : `${title} · ${APP_NAME}`
   })
 }

@@ -2,10 +2,18 @@ import type { ThemeMode } from '~/types/app'
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { THEME_STORAGE_KEY } from '~/constants/app'
+import { readStorage, writeStorage } from '~/utils/storage'
 
 const defaultTheme: ThemeMode = 'light'
 
+function normalizeTheme(value: string | null): ThemeMode {
+  return value === 'dark' ? 'dark' : defaultTheme
+}
+
 function applyThemeDom(theme: ThemeMode) {
+  if (typeof document === 'undefined')
+    return
+
   document.documentElement.dataset.theme = theme
   document.documentElement.classList.toggle('theme-dark', theme === 'dark')
 }
@@ -15,9 +23,9 @@ export const useAppStore = defineStore('app', () => {
   const themeLabel = computed(() => theme.value === 'dark' ? '切换浅色' : '切换深色')
 
   function setTheme(value: ThemeMode) {
-    theme.value = value
-    localStorage.setItem(THEME_STORAGE_KEY, value)
-    applyThemeDom(value)
+    theme.value = normalizeTheme(value)
+    writeStorage(THEME_STORAGE_KEY, theme.value)
+    applyThemeDom(theme.value)
   }
 
   function toggleTheme() {
@@ -25,8 +33,7 @@ export const useAppStore = defineStore('app', () => {
   }
 
   function hydrateTheme() {
-    const stored = localStorage.getItem(THEME_STORAGE_KEY)
-    setTheme(stored === 'dark' ? 'dark' : defaultTheme)
+    setTheme(normalizeTheme(readStorage(THEME_STORAGE_KEY)))
   }
 
   return {

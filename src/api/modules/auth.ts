@@ -1,9 +1,9 @@
-import type { LoginResponse, MinimalUser } from '~/types/auth'
+import type { LoginPayload, LoginResponse, MinimalUser } from '~/types/auth'
 import { alovaClient } from '~/api/client'
 import { createRequestConfig } from '~/api/interceptors'
 
-export function postDemoLogin() {
-  return alovaClient.Post<LoginResponse>('/auth/login', { username: 'demo' }, createRequestConfig())
+export function postLogin(payload: LoginPayload) {
+  return alovaClient.Post<LoginResponse>('/auth/login', payload, createRequestConfig())
 }
 
 export function getCurrentUser() {

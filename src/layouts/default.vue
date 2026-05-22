@@ -32,12 +32,12 @@ async function handleLogout() {
         </div>
 
         <div class="flex items-center gap-2">
-          <button class="border border-[var(--color-border)] rounded-full px-4 py-2 text-sm hover:bg-[var(--color-surface-raised)]" type="button" @click="toggleTheme">
+          <button class="app-button-secondary" type="button" @click="toggleTheme">
             {{ themeLabel }}
           </button>
           <button
             v-if="isAuthenticated"
-            class="rounded-full bg-[var(--color-text)] px-4 py-2 text-sm text-[var(--color-bg)]"
+            class="app-button bg-[var(--color-text)] text-[var(--color-bg)]"
             type="button"
             @click="handleLogout"
           >

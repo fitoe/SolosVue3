@@ -3,6 +3,7 @@ import path from 'node:path'
 import process from 'node:process'
 
 const cwd = process.cwd()
+const dryRun = process.argv.includes('--dry-run')
 
 const targets = [
   'src/pages/login.vue',
@@ -10,10 +11,28 @@ const targets = [
   'src/api/modules/demo.ts',
 ]
 
-for (const target of targets) {
-  const absolutePath = path.join(cwd, target)
-  if (fs.existsSync(absolutePath))
+const optionalCleanup = [
+  'src/types/typed-router.d.ts',
+  'src/types/components.d.ts',
+]
+
+function removeFile(relativePath) {
+  const absolutePath = path.join(cwd, relativePath)
+  if (!fs.existsSync(absolutePath))
+    return false
+
+  if (!dryRun)
     fs.rmSync(absolutePath, { force: true })
+
+  return true
 }
 
-console.log('Removed demo files. Update navigation and route references before build if you keep layout links unchanged.')
+const removed = [...targets, ...optionalCleanup].filter(removeFile)
+
+if (dryRun) {
+  console.log(removed.length ? `Demo cleanup would remove:\n${removed.map(item => `- ${item}`).join('\n')}` : 'No demo files found.')
+  process.exit(0)
+}
+
+console.log(removed.length ? `Removed demo files:\n${removed.map(item => `- ${item}`).join('\n')}` : 'No demo files found.')
+console.log('Run pnpm typecheck once to regenerate route/component declaration files after cleanup.')
