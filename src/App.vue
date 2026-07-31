@@ -1,11 +1,5 @@
 <script setup lang="ts">
-import BlankLayout from '~/layouts/blank.vue'
-import DefaultLayout from '~/layouts/default.vue'
-
-const layouts = {
-  blank: BlankLayout,
-  default: DefaultLayout,
-}
+import { layouts } from '~/layouts'
 </script>
 
 <template>

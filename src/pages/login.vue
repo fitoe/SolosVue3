@@ -11,20 +11,19 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { normalizeRedirectPath } from '~/app/router'
 import AppCard from '~/components/app/AppCard.vue'
 import { useAuth } from '~/composables/useAuth'
 
 const route = useRoute()
 const router = useRouter()
-const { login } = useAuth()
-const username = ref('demo')
-const password = ref('demo')
+const { startDemoSession } = useAuth()
+const displayName = ref('Demo User')
 const loading = ref(false)
 const errorMessage = ref('')
 
 const nextPath = computed(() => {
-  const redirect = route.query.redirect
-  return typeof redirect === 'string' && redirect.startsWith('/') ? redirect : '/'
+  return normalizeRedirectPath(route.query.redirect)
 })
 
 async function handleLogin() {
@@ -32,13 +31,7 @@ async function handleLogin() {
   errorMessage.value = ''
 
   try {
-    await login({
-      token: 'demo-token',
-      user: {
-        id: username.value || 'demo-user',
-        name: username.value || 'Demo User',
-      },
-    })
+    await startDemoSession(displayName.value || 'Demo User')
     await router.push(nextPath.value)
   } catch (caught) {
     errorMessage.value = caught instanceof Error ? caught.message : 'Unable to sign in'
@@ -53,36 +46,25 @@ async function handleLogin() {
     <AppCard class="w-full p-8 space-y-6">
       <div class="space-y-2">
         <p class="text-sm text-[var(--color-text-muted)] tracking-[0.25em] uppercase">
-          Auth skeleton
+          Local session demo
         </p>
         <h1 class="text-3xl font-semibold">
-          Sign in
+          Start a demo session
         </h1>
         <p class="text-sm text-[var(--color-text-soft)] leading-6">
-          Minimal guest route, redirect support, token persistence, and a form shape that can be replaced by a real API call.
+          This creates a local-only session to demonstrate route guards and redirects. Replace it with your backend login flow.
         </p>
       </div>
 
       <form class="space-y-4" @submit.prevent="handleLogin">
         <label class="block space-y-2">
-          <span class="text-sm font-medium">Username</span>
+          <span class="text-sm font-medium">Display name</span>
           <input
-            v-model="username"
-            autocomplete="username"
+            v-model="displayName"
+            autocomplete="name"
             class="w-full border border-[var(--color-border)] rounded-2xl bg-[var(--color-surface-raised)] px-4 py-3 text-sm outline-none transition focus:border-[var(--color-accent)]"
-            name="username"
+            name="displayName"
             type="text"
-          >
-        </label>
-
-        <label class="block space-y-2">
-          <span class="text-sm font-medium">Password</span>
-          <input
-            v-model="password"
-            autocomplete="current-password"
-            class="w-full border border-[var(--color-border)] rounded-2xl bg-[var(--color-surface-raised)] px-4 py-3 text-sm outline-none transition focus:border-[var(--color-accent)]"
-            name="password"
-            type="password"
           >
         </label>
 
@@ -95,7 +77,7 @@ async function handleLogin() {
           :disabled="loading"
           type="submit"
         >
-          {{ loading ? 'Signing in...' : 'Sign in with local demo session' }}
+          {{ loading ? 'Starting...' : 'Start local demo session' }}
         </button>
       </form>
 

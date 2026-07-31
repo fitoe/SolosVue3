@@ -1,10 +1,7 @@
 import type { Router } from 'vue-router'
 import type { ApiError } from '~/types/api'
+import { LOGIN_PATH } from '~/constants/routes'
 import { useAuthStore } from '~/stores/auth'
-
-export interface RequestOptions {
-  headers?: Record<string, string>
-}
 
 interface ResponseLike {
   status?: number
@@ -31,18 +28,6 @@ function pickMessage(value: Record<string, unknown>, fallback: string): string {
   }
 
   return fallback
-}
-
-export function createRequestConfig(options: RequestOptions = {}): RequestOptions {
-  const auth = useAuthStore()
-
-  return {
-    ...options,
-    headers: {
-      ...options.headers,
-      ...(auth.token ? { Authorization: `Bearer ${auth.token}` } : {}),
-    },
-  }
 }
 
 export function createApiError(error: unknown): ApiError {
@@ -78,7 +63,7 @@ export async function handleUnauthorized(router: Router) {
   const redirect = router.currentRoute.value.fullPath
   auth.clearAuth()
   await router.push({
-    path: '/login',
-    query: redirect && redirect !== '/login' ? { redirect } : {},
+    path: LOGIN_PATH,
+    query: redirect && redirect !== LOGIN_PATH ? { redirect } : {},
   })
 }

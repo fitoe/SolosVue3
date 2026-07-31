@@ -2,7 +2,7 @@ import type { Router } from 'vue-router'
 import { createPinia, setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it } from 'vitest'
 import { applyRouterGuards } from '~/app/guard'
-import { createAppRouter } from '~/app/router'
+import { createAppRouter, normalizeRedirectPath } from '~/app/router'
 import { useAuthStore } from '~/stores/auth'
 
 describe('router guards', () => {
@@ -11,7 +11,7 @@ describe('router guards', () => {
   beforeEach(async () => {
     setActivePinia(createPinia())
     router = createAppRouter()
-    applyRouterGuards(router)
+    applyRouterGuards(router, 'Test App')
     await router.push('/')
     await router.isReady()
   })
@@ -30,5 +30,15 @@ describe('router guards', () => {
     await router.push('/login')
 
     expect(router.currentRoute.value.path).toBe('/')
+  })
+
+  it('uses the configured application title', () => {
+    expect(document.title).toBe('概览 · Test App')
+  })
+
+  it('keeps login redirects inside the application', () => {
+    expect(normalizeRedirectPath('/demo-api')).toBe('/demo-api')
+    expect(normalizeRedirectPath('//example.com')).toBe('/')
+    expect(normalizeRedirectPath('https://example.com')).toBe('/')
   })
 })

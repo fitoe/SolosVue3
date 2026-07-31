@@ -10,13 +10,13 @@
 <script setup lang="ts">
 import AppContainer from '~/components/app/AppContainer.vue'
 
-const badges = ['Vite 8', '文件路由', 'Pinia 3', 'UnoCSS', 'alova']
+const badges = ['Vite 8', 'Router 5', 'Pinia 4', 'UnoCSS', 'alova']
 
 const layers = [
   {
     name: '够完整',
     summary: '常用能力已经在位，拿来就能开始写页面。',
-    items: ['Vue 3.5', 'Router 4', 'Pinia', 'alova'],
+    items: ['Vue 3.5', 'Router 5', 'Pinia 4', 'alova'],
   },
   {
     name: '不过重',
@@ -26,7 +26,7 @@ const layers = [
   {
     name: '好接手',
     summary: '结构清楚，删示例和继续扩展都比较顺手。',
-    items: ['i18n', 'pwa', 'admin-auth', 'mock'],
+    items: ['i18n', 'PWA', 'RBAC', '组件库'],
   },
 ]
 
@@ -47,7 +47,7 @@ const launchSteps = [
     index: '03',
     title: '按自己来改',
     text: '保留、删减、继续扩展都可以。',
-    code: 'pnpm demo:remove',
+    code: '从 src/pages 开始写业务',
   },
 ]
 
@@ -128,7 +128,7 @@ const suitability = [
               已经带上的
             </p>
             <p class="mt-3 text-sm text-[var(--color-text-soft)] leading-7">
-              Vue 3.5、Router 4、Pinia、UnoCSS、alova。
+              Vue 3.5、Router 5、Pinia 4、UnoCSS、alova。
             </p>
           </div>
           <div class="px-6 py-6 md:border-l xl:border-l-0 md:border-[var(--color-border)] md:px-10 xl:px-12">

@@ -14,7 +14,14 @@ export function useAuth() {
   const auth = useAuthStore()
   const isAuthenticated = computed(() => auth.isAuthenticated)
 
-  async function login(payload: LoginResponse = fallbackDemoLogin) {
+  async function startDemoSession(name = fallbackDemoLogin.user.name) {
+    const payload: LoginResponse = {
+      ...fallbackDemoLogin,
+      user: {
+        ...fallbackDemoLogin.user,
+        name,
+      },
+    }
     auth.setAuth(payload)
   }
 
@@ -24,8 +31,8 @@ export function useAuth() {
 
   return {
     isAuthenticated,
-    login,
     logout,
+    startDemoSession,
     user: computed(() => auth.user),
   }
 }

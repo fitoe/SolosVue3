@@ -1,8 +1,8 @@
 import { createPinia, setActivePinia } from 'pinia'
-import { beforeEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { createMemoryHistory, createRouter } from 'vue-router'
-import { parseJsonResponse } from '~/api/client'
-import { createApiError, createRequestConfig, handleUnauthorized } from '~/api/interceptors'
+import { alovaClient, parseJsonResponse, setUnauthorizedHandler } from '~/api/client'
+import { createApiError, handleUnauthorized } from '~/api/interceptors'
 import { useAuthStore } from '~/stores/auth'
 
 describe('api helpers', () => {
@@ -11,18 +11,23 @@ describe('api helpers', () => {
     localStorage.clear()
   })
 
-  it('injects bearer token into headers', () => {
+  afterEach(() => {
+    setUnauthorizedHandler()
+    vi.unstubAllGlobals()
+  })
+
+  it('injects bearer tokens through the API client', async () => {
     const auth = useAuthStore()
     auth.setToken('secret')
+    const fetchMock = vi.fn().mockResolvedValue(new Response('{}', {
+      headers: { 'Content-Type': 'application/json' },
+    }))
+    vi.stubGlobal('fetch', fetchMock)
 
-    const config = createRequestConfig({
-      headers: {
-        Accept: 'application/json',
-      },
-    })
+    await alovaClient.Get('/auth-check', { cacheFor: 0 }).send()
 
-    expect(config.headers?.Authorization).toBe('Bearer secret')
-    expect(config.headers?.Accept).toBe('application/json')
+    const [, request] = fetchMock.mock.calls[0]
+    expect(request.headers.Authorization).toBe('Bearer secret')
   })
 
   it('maps string errors into ApiError shape', () => {
@@ -50,6 +55,40 @@ describe('api helpers', () => {
     const response = new Response(null, { status: 204 })
 
     await expect(parseJsonResponse(response)).resolves.toBeNull()
+  })
+
+  it('returns plain text responses without forcing JSON parsing', async () => {
+    const response = new Response('ok', {
+      headers: { 'Content-Type': 'text/plain' },
+    })
+
+    await expect(parseJsonResponse(response)).resolves.toBe('ok')
+  })
+
+  it('runs the unauthorized handler before rejecting a 401 response', async () => {
+    const onUnauthorized = vi.fn()
+    setUnauthorizedHandler(onUnauthorized)
+    const response = new Response(JSON.stringify({ message: 'Expired session' }), {
+      headers: { 'Content-Type': 'application/json' },
+      status: 401,
+    })
+
+    await expect(parseJsonResponse(response)).rejects.toMatchObject({ status: 401 })
+    expect(onUnauthorized).toHaveBeenCalledOnce()
+  })
+
+  it('runs the unauthorized handler even when a 401 body is invalid JSON', async () => {
+    const onUnauthorized = vi.fn()
+    setUnauthorizedHandler(onUnauthorized)
+    const response = new Response('{broken', {
+      headers: { 'Content-Type': 'application/json' },
+      status: 401,
+    })
+
+    await expect(parseJsonResponse(response)).rejects.toMatchObject({
+      message: 'Server returned invalid JSON',
+    })
+    expect(onUnauthorized).toHaveBeenCalledOnce()
   })
 
   it('throws mapped errors for non-ok JSON responses', async () => {

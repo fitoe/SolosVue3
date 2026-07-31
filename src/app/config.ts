@@ -17,7 +17,6 @@ function normalizeBaseUrl(value: string): string {
 export function createAppConfig(): AppConfig {
   return {
     apiBaseUrl: normalizeBaseUrl(readEnv('VITE_API_BASE_URL', '/api')),
-    appEnv: readEnv('MODE', import.meta.env.MODE),
     appTitle: readEnv('VITE_APP_TITLE', APP_NAME),
   }
 }

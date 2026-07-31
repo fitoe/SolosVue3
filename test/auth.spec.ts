@@ -1,12 +1,17 @@
 import { createPinia, setActivePinia } from 'pinia'
-import { beforeEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { AUTH_STORAGE_KEY, USER_STORAGE_KEY } from '~/constants/app'
 import { useAuthStore } from '~/stores/auth'
+import { readStorage, writeStorage } from '~/utils/storage'
 
 describe('auth store', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
     localStorage.clear()
+  })
+
+  afterEach(() => {
+    vi.restoreAllMocks()
   })
 
   it('persists token changes', () => {
@@ -48,5 +53,17 @@ describe('auth store', () => {
     auth.hydrate()
 
     expect(auth.user).toBeNull()
+  })
+
+  it('keeps working when browser storage is unavailable', () => {
+    vi.spyOn(Storage.prototype, 'getItem').mockImplementation(() => {
+      throw new DOMException('Blocked')
+    })
+    vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+      throw new DOMException('Quota exceeded')
+    })
+
+    expect(readStorage('blocked')).toBeNull()
+    expect(() => writeStorage('blocked', 'value')).not.toThrow()
   })
 })

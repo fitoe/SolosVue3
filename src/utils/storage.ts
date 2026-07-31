@@ -16,7 +16,11 @@ export function getBrowserStorage(): BrowserStorageLike | null {
 }
 
 export function readStorage(key: string): string | null {
-  return getBrowserStorage()?.getItem(key) ?? null
+  try {
+    return getBrowserStorage()?.getItem(key) ?? null
+  } catch {
+    return null
+  }
 }
 
 export function writeStorage(key: string, value: string | null) {
@@ -24,8 +28,12 @@ export function writeStorage(key: string, value: string | null) {
   if (!storage)
     return
 
-  if (value === null)
-    storage.removeItem(key)
-  else
-    storage.setItem(key, value)
+  try {
+    if (value === null)
+      storage.removeItem(key)
+    else
+      storage.setItem(key, value)
+  } catch {
+    // Storage can be blocked or full. Keep the in-memory state usable.
+  }
 }

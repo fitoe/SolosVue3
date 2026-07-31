@@ -1,40 +1,18 @@
-<p align="center">
-  <h1 align="center">SolosVue3</h1>
-  <p align="center">面向现代业务型 SPA 的 Vue 3 脚手架，强调快、轻、顺手、可删改。</p>
-</p>
+# SolosVue3
 
-<p align="center">
-  <a href="https://github.com/fitoe/SolosVue3"><img alt="GitHub Repo" src="https://img.shields.io/badge/GitHub-SolosVue3-111827?logo=github"></a>
-  <a href="https://github.com/fitoe/SolosVue3/generate"><img alt="Template" src="https://img.shields.io/badge/template-ready-2563eb"></a>
-  <img alt="Vue 3" src="https://img.shields.io/badge/Vue-3.5-42b883?logo=vue.js">
-  <img alt="Vite 8" src="https://img.shields.io/badge/Vite-8-646cff?logo=vite">
-  <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-5.9-3178c6?logo=typescript">
-  <img alt="License" src="https://img.shields.io/badge/license-unset-lightgrey">
-</p>
+面向业务型 SPA 的 Vue 3 起点：保留稳定、常用的基础能力，不预装具体业务方案。
 
-<p align="center">
-  <a href="https://github.com/fitoe/SolosVue3/generate">Use this template</a> ·
-  <a href="./README.md">English Summary</a>
-</p>
+## 技术栈
 
-> 这个模板采用 `base + presets` 的思路：base 只保留最常用、最稳定的能力，额外能力后续按需增强，而不是一开始就把所有生态件塞进来。
+- Vue 3.5、Vite 8、TypeScript 5.9
+- Vue Router 5 文件路由与类型化路由
+- Pinia 4、alova、UnoCSS
+- Vitest、vue-tsc、ESLint
+- CSS Variables 设计令牌与明暗主题
 
-## 快速预览
+## 开始
 
-- `Vue 3` + `Vite 8` + `TypeScript`
-- 文件路由 + typed routes + layouts
-- `Pinia` + `alova` + auth skeleton
-- `UnoCSS` + `CSS Variables` tokens
-- `Vitest` + `vue-tsc` + `ESLint`
-- demo 可删，presets 可扩
-
-## 一分钟开始
-
-### GitHub Template
-
-点击仓库顶部 `Use this template`。
-
-### degit
+需要 Node `20.19+` 或 `22.12+`，以及 pnpm 10。
 
 ```bash
 npx degit fitoe/SolosVue3 my-app
@@ -43,62 +21,7 @@ pnpm install
 pnpm dev
 ```
 
-## 特性
-
-- `Vue 3` + `Vite 8` + `pnpm`
-- 基于文件的路由
-- 类型化路由生成
-- `layouts` 页面布局系统
-- `Pinia` 状态管理
-- `UnoCSS` + `CSS Variables` design tokens
-- `alova` 请求层基座
-- 最小鉴权骨架
-- `Vitest` + `vue-tsc` + `ESLint flat config`
-- 可删除 demo
-- 同仓 `presets` 扩展位
-
-## 适合什么项目
-
-- 中小型到中大型业务 SPA
-- 后台系统、工具平台、业务中台
-- 想保留 Vue 生态开发体验，但不想一上来就用完整 SSR/全栈框架的项目
-
-## 不默认做什么
-
-这个模板刻意**不**在 base 里直接塞这些能力：
-
-- SSG
-- PWA
-- i18n
-- Markdown 页面系统
-- 重 UI 组件库
-- E2E 测试器
-- 特定部署平台绑定
-
-原因很简单：这些能力都常见，但不该成为所有项目的默认负担。base 保持轻，增强能力走 `presets`。
-
-## 环境要求
-
-- Node `20.19+` 或 `22.12+`
-- pnpm `10+`
-
-## 开发
-
-```bash
-pnpm dev
-```
-
-默认启动 Vite 开发服务器。
-
-## 构建
-
-```bash
-pnpm build
-```
-
-构建前会先跑 `vue-tsc --noEmit`。
-
-## 常用命令
+常用命令：
 
 ```bash
 pnpm dev
@@ -106,37 +29,27 @@ pnpm lint
 pnpm typecheck
 pnpm test
 pnpm build
-pnpm demo:remove
-pnpm preset:apply <preset-name>
+pnpm check
 ```
 
-## 目录结构
+## 目录
 
-```txt
+```text
 src/
-  pages/        页面路由文件
-  layouts/      页面壳层
-  modules/      启动安装模块
-  api/          alova client 和接口 method
-  stores/       全局状态
-  composables/  组合式逻辑
-  styles/       tokens、主题、全局样式
-  components/   基础 app 组件
-presets/        可选增强能力
-scripts/        preset / demo 处理脚本
-test/           基础测试
+  app/          应用启动、配置、路由和全局错误处理
+  api/          alova client、响应解析和领域请求
+  components/   基础组件
+  composables/  可复用组合逻辑
+  layouts/      页面布局及布局注册表
+  pages/        文件路由页面
+  stores/       Pinia 状态
+  styles/       tokens、主题和全局样式
+test/           关键状态与集成测试
 ```
 
-## 预置约定
+## 路由与布局
 
-### 路由
-
-- 页面放在 `src/pages`
-- 使用文件路由
-- 支持 route meta
-- 支持 layout 切换
-
-示例：
+页面放在 `src/pages`。路由元信息写在页面的 `<route>` 块中：
 
 ```vue
 <route lang="json">
@@ -150,121 +63,34 @@ test/           基础测试
 </route>
 ```
 
-### 布局
+新增布局时：
 
-- `src/layouts/default.vue`
-- `src/layouts/blank.vue`
+1. 在 `src/layouts` 创建组件。
+2. 在 `src/layouts/index.ts` 注册；`layout` 类型会自动同步。
 
-新增布局后，在页面 route meta 里指定 `layout` 即可。
+## 请求与鉴权
 
-### 请求层
+- `src/api/client.ts` 统一处理 JSON、文本、空响应和 HTTP 错误。
+- API client 会在存在 session 时自动注入 Bearer Token，业务方法无需重复配置。
+- 401 响应会清理本地 session，并跳转登录页。
+- 登录页使用明确标识的本地演示 session；接入后端时，用真实 auth service 替换它。
 
-- `src/api/client.ts`：统一 `alova` client，集中解析 JSON、204 和 HTTP 错误
-- `src/api/interceptors.ts`：请求头、401、错误映射
-- `src/api/modules/*`：按域拆分 method
-- `VITE_API_BASE_URL`：配置 API baseURL，默认 `/api`
-- `VITE_PROXY_TARGET`：本地开发时可选代理目标，例如 `http://localhost:3000`
+演示 Token 存在 `localStorage`，适合展示 SPA 流程，不代表所有项目的安全方案。高安全需求应根据后端架构选择 HttpOnly Cookie、CSRF 防护及刷新策略。
 
-复制 `.env.example` 到 `.env.local` 后按项目改值：
+环境变量：
 
 ```bash
-cp .env.example .env.local
+VITE_APP_TITLE=SolosVue3
+VITE_API_BASE_URL=/api
+VITE_PROXY_TARGET=http://localhost:3000
 ```
-
-### 鉴权骨架
-
-默认只做这些：
-
-- token 和最小用户信息持久化
-- `requiresAuth` 路由守卫
-- `guestOnly` 路由守卫
-- 401 清理会话并跳转登录
-- demo 登录/退出
-
-默认不做这些：
-
-- RBAC 菜单系统
-- 动态路由回灌
-- 多租户模型
-- 标签页缓存
 
 ## 设计取向
 
-### 1. 只保留高价值默认项
+基础项目不默认包含 i18n、PWA、UI 组件库、RBAC、mock 或 E2E。它们通常依赖具体产品选择，不应该以空占位或不可验证的 preset 出现。
 
-默认保留这些能力：
+`src/styles/tokens.css` 与 `src/styles/themes.css` 是视觉变量真相源；UnoCSS 负责消费这些变量。
 
-- 文件路由
-- layouts
-- modules 启动装配
-- 自动导入
-- UnoCSS
-- 工程质量门
+## 质量门
 
-主动不放进 base 的能力：
-
-- `vite-ssg`
-- Markdown pages
-- PWA
-- i18n
-- webfont 下载链
-- 旧的 E2E 默认栈
-
-### 2. Base 要轻
-
-这个仓库的目标不是“开箱即用的大而全后台模板”，而是：
-
-- 起点足够完整
-- 删除足够容易
-- 约定足够清楚
-
-### 3. Tokens 是真相源
-
-样式层的真相源在：
-
-- `src/styles/tokens.css`
-- `src/styles/themes.css`
-
-`UnoCSS` 负责消费这些 tokens，不负责定义设计系统真相。
-
-## 删除 demo
-
-如果你不想保留模板自带页面：
-
-```bash
-pnpm demo:remove
-```
-
-它会移除 demo 登录页、demo API 页面、对应示例 method，并清理常见生成类型文件。执行后，运行 `pnpm typecheck` 重新生成 typed route/component 声明，再把导航里的示例链接替换为你的业务入口。
-
-可先预览将删除的文件：
-
-```bash
-node scripts/remove-demo.mjs --dry-run
-```
-
-## Presets
-
-当前仓库预留了这些扩展位：
-
-- `i18n`
-- `pwa`
-- `admin-auth`
-- `ui-naive`
-- `mock`
-- `e2e-playwright`
-
-现在还是占位结构，后续可以逐步做成真正可应用的 preset。
-
-## 验证
-
-模板当前已验证通过：
-
-- `pnpm lint`
-- `pnpm typecheck`
-- `pnpm test`
-- `pnpm build`
-
-并且额外验证过：
-
-- `pnpm demo:remove` 之后仍可构建
+`pnpm check` 依次运行 lint、类型检查、测试和生产构建。GitHub Actions 会在 main 分支和 Pull Request 上执行同一门禁及高危依赖审计，Dependabot 每周检查 npm 与 Actions 更新。

@@ -2,6 +2,7 @@
 import { useRouter } from 'vue-router'
 import { useAuth } from '~/composables/useAuth'
 import { useTheme } from '~/composables/useTheme'
+import { LOGIN_PATH } from '~/constants/routes'
 
 const router = useRouter()
 const { isAuthenticated, logout } = useAuth()
@@ -9,7 +10,7 @@ const { themeLabel, toggleTheme } = useTheme()
 
 async function handleLogout() {
   await logout()
-  await router.push('/login')
+  await router.push(LOGIN_PATH)
 }
 </script>
 

@@ -4,11 +4,6 @@ export interface ApiError {
   status?: number
 }
 
-export interface ApiResponse<T> {
-  data: T
-  message: string
-}
-
 export interface DemoStatusItem {
   title: string
   detail: string

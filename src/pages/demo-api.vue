@@ -12,7 +12,7 @@
 import type { DemoStatusResponse } from '~/types/api'
 import { computed, onMounted, ref } from 'vue'
 import { createApiError } from '~/api/interceptors'
-import { getDemoStatus } from '~/api/modules/demo'
+import { getLocalDemoStatus } from '~/api/modules/demo'
 import { createAppConfig } from '~/app/config'
 import AppCard from '~/components/app/AppCard.vue'
 import AppContainer from '~/components/app/AppContainer.vue'
@@ -33,7 +33,7 @@ async function send() {
   error.value = ''
 
   try {
-    data.value = await getDemoStatus().send()
+    data.value = await getLocalDemoStatus().send()
   } catch (caught) {
     error.value = createApiError(caught).message
   } finally {

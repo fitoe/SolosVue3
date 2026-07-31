@@ -1,9 +1,0 @@
-{
-  "name": "i18n",
-  "description": "Add vue-i18n and locale structure.",
-  "dependencies": [
-    "vue-i18n"
-  ],
-  "devDependencies": [],
-  "conflicts": []
-}

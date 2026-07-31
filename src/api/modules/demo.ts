@@ -1,7 +1,6 @@
 import type { DemoStatusResponse } from '~/types/api'
-import { createRequestConfig } from '~/api/interceptors'
 
-export function createDemoStatus(): DemoStatusResponse {
+export function createLocalDemoStatus(): DemoStatusResponse {
   return {
     generatedAt: new Date().toISOString(),
     message: 'Demo request resolved. Replace this with your real backend.',
@@ -22,11 +21,10 @@ export function createDemoStatus(): DemoStatusResponse {
   }
 }
 
-export function getDemoStatus() {
+export function getLocalDemoStatus() {
   return {
-    config: createRequestConfig(),
     async send() {
-      return createDemoStatus()
+      return createLocalDemoStatus()
     },
   }
 }

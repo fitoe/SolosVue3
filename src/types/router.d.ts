@@ -1,3 +1,4 @@
+import type { LayoutName } from '~/layouts'
 import 'vue-router'
 
 declare module 'vue-router' {
@@ -5,7 +6,7 @@ declare module 'vue-router' {
     title?: string
     requiresAuth?: boolean
     guestOnly?: boolean
-    layout?: 'default' | 'blank'
+    layout?: LayoutName
   }
 }
 
