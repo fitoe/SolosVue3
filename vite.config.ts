@@ -3,10 +3,9 @@ import Vue from '@vitejs/plugin-vue'
 import UnoCSS from 'unocss/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
-import VueRouter from 'unplugin-vue-router/vite'
 import { defineConfig } from 'vite'
 import VueDevTools from 'vite-plugin-vue-devtools'
-import VueLayouts from 'vite-plugin-vue-layouts'
+import VueRouter from 'vue-router/vite'
 
 export default defineConfig({
   plugins: [
@@ -15,10 +14,6 @@ export default defineConfig({
       routesFolder: 'src/pages',
     }),
     Vue(),
-    VueLayouts({
-      layoutsDirs: 'src/layouts',
-      defaultLayout: 'default',
-    }),
     AutoImport({
       dts: 'src/types/auto-imports.d.ts',
       imports: [

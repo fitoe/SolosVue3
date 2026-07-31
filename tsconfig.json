@@ -11,8 +11,7 @@
     },
     "types": [
       "node",
-      "vite/client",
-      "unplugin-vue-router/client"
+      "vite/client"
     ]
   },
   "include": [

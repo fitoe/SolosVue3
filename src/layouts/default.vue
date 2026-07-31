@@ -47,6 +47,6 @@ async function handleLogout() {
       </div>
     </header>
 
-    <RouterView />
+    <slot />
   </div>
 </template>

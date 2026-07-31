@@ -1,20 +1,18 @@
 import path from 'node:path'
 import Vue from '@vitejs/plugin-vue'
-import VueRouter from 'unplugin-vue-router/vite'
-import Layouts from 'vite-plugin-vue-layouts'
 import { defineConfig } from 'vitest/config'
+import VueRouter from 'vue-router/vite'
 
 export default defineConfig({
   plugins: [
-    Vue() as any,
     VueRouter({
       dts: 'src/types/typed-router.d.ts',
     }) as any,
-    Layouts() as any,
+    Vue() as any,
   ],
   resolve: {
     alias: {
-      '~/': `${path.resolve(__dirname, 'src')}/`,
+      '~/': `${path.resolve(import.meta.dirname, 'src')}/`,
     },
   },
   test: {
